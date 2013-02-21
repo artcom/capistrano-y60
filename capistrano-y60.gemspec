@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'capistrano-y60'
-  s.version     = '0.0.5'
+  s.version     = '0.0.6'
   s.date        = '2013-02-21'
   s.summary     = "y60 capistrano recipes"
   s.description = "Recipes for y60 deployment with capistrano"

@@ -9,6 +9,7 @@ configuration.load do
 # Configuration
 #
 
+require 'rake'
 require 'rubygems'
 require 'fileutils'
 

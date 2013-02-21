@@ -1,10 +1,3 @@
-require 'artcom/common'
-require 'artcom/app_deploy'
-require 'artcom/asl_deploy'
-require 'artcom/content_deploy'
-require 'artcom/linux'
-require 'artcom/watchdog_deploy'
-require 'artcom/y60_deploy'
 
 configuration = Capistrano::Configuration.respond_to?(:instance) ?
   Capistrano::Configuration.instance(:must_exist) :
@@ -16,10 +9,11 @@ configuration.load do
 # Configuration
 #
 
- Multistage
- _cset(:default_stage) { 'testing' }
 require 'rubygems'
 require 'fileutils'
+
+ Multistage
+ _cset(:default_stage) { 'testing' }
 begin
   require 'capistrano/ext/multistage' # gem install capistrano-ext
 rescue LoadError
@@ -30,6 +24,15 @@ begin
 rescue LoadError
   puts "'railsless-deploy' gem is required on the local machine"
 end
+
+# load library
+require 'artcom/common'
+require 'artcom/app_deploy'
+require 'artcom/asl_deploy'
+require 'artcom/content_deploy'
+require 'artcom/linux'
+require 'artcom/watchdog_deploy'
+require 'artcom/y60_deploy'
 
 # User details
 _cset :user,          'artcom'

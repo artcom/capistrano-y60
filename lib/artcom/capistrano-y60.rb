@@ -12,13 +12,14 @@ configuration.load do
 require 'rubygems'
 require 'fileutils'
 
- Multistage
+# Multistage
  _cset(:default_stage) { 'testing' }
 begin
   require 'capistrano/ext/multistage' # gem install capistrano-ext
 rescue LoadError
   puts "'capistrano-ext' gem is required on the local machine"
 end
+
 begin
   require 'railsless-deploy'
 rescue LoadError

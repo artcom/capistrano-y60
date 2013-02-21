@@ -1,10 +1,10 @@
-require 'artcom/common'
-require 'artcom/app_deploy'
-require 'artcom/asl_deploy'
-require 'artcom/content_deploy'
-require 'artcom/linux'
-require 'artcom/watchdog_deploy'
-require 'artcom/y60_deploy'
+require 'common'
+require 'app_deploy'
+require 'asl_deploy'
+require 'content_deploy'
+require 'linux'
+require 'watchdog_deploy'
+require 'y60_deploy'
 
 configuration = Capistrano::Configuration.respond_to?(:instance) ?
   Capistrano::Configuration.instance(:must_exist) :

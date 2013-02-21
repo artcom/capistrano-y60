@@ -1,9 +1,10 @@
+# Y60 capistrano recipes
 This is a collection of tasks for deploying y60 applications.
 You need to load them in your Capfile with something like:
 
-Dir['path/to/y60_capistrano_recipes/recipes/*.rb'].each { |plugin| load(plugin) }
+`Dir['path/to/y60_capistrano_recipes/recipes/*.rb'].each { |plugin| load(plugin) }`
 
-# Available tasks
+## Available tasks
 
 With the command
  cap -T
@@ -12,11 +13,30 @@ you see all available deployment tasks
 
 ## Deploying Y60, ASL, Watchdog
 
-It is often the case that your deployment system and your target system differ. In that case build the libs and binaries in a VM or so get yourself a y60.tar.gz with all included and use the task
+### Coping the engine
 
- cap <stage> y60_deploy:copy_engine
+It is often the case that your deployment system and your target system differs. In that case build the libs and binaries in a VM or so get yourself a y60.tar.gz with all included and use the task
+
+ `cap y60_deploy:copy_engine`
 
  which deploys the y60, ASL, watchdog to the target system
+
+### Updating ldconfig
+
+Creates a ldconfig config file and copies it to the appropriate folder and then executes ldconfig.
+There are task for the asl and y60 libraries:
+* `asl_deploy:update_ldconfig`
+* `y60_deploy:update_ldconfig`
+
+### Updating environment
+
+In order to make y60 and watchdog available 
+Exports the Y60_DIR env variable by creating a export script and copy it to the appropriate folder
+
+`y60_deploy:update_environment` - `watchdog_deploy:update_environment` - exports the WATCHDOG_DIR env variable by creating a export script and copy it to the appropriate folder
+
+
+
 
 Only called once to initially setup the target system
  cap <stage> deploy:setup
@@ -34,10 +54,6 @@ A three stage deployment. deploy:setup is only called once to initially setup th
 deploy:setup hooks
  cap <stage> deploy:setup
  Includes the following tasks: 
-"asl_deploy:update_ldconfig" - creates a ldconfig config file and copies it to the appropriate folder and then executes ldconfig
-"y60_deploy:update_ldconfig" - creates a ldconfig config file and copies it to the appropriate folder and then executes ldconfig
-"y60_deploy:update_environment" - exports the Y60_DIR env variable by creating a export script and copy it to the appropriate folder
-"watchdog_deploy:update_environment" - exports the WATCHDOG_DIR env variable by creating a export script and copy it to the appropriate folder
 "content_deploy:update_environment" - exports the CONTENT_DIR env variable by creating a export script and copy it to the appropriate folder
 "linux:add_startapp_desktop_link" - creates and copies desktop link to start the app
 deploy hooks

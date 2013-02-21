@@ -1,0 +1,13 @@
+*~
+*.log
+*.js~
+*.swp
+*.vim
+*.swo
+*.swn
+*.swm
+*.i60
+.DS_Store
+*.gem
+
+

@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "capistrano-y60"
-  s.version = "0.0.8"
+  s.version = "0.0.9"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Gunnar Marten"]
@@ -17,6 +17,8 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     "README.md",
+    "Rakefile",
+    "VERSION",
     "capistrano-y60.gemspec",
     "lib/artcom/app_deploy.rb",
     "lib/artcom/asl_deploy.rb",

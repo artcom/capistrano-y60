@@ -1,6 +1,5 @@
 # Capistrano2 differentiator
 load 'deploy' if respond_to?(:namespace)
-Dir['vendor/plugins/*/recipes/*.rb'].each { |plugin| load(plugin) }
 
 # Required gems/libraries
 require 'rubygems'
@@ -24,9 +23,15 @@ configuration = Capistrano::Configuration.respond_to?(:instance) ?
 
 configuration.load do
 
+  # Load library
+  require 'artcom/linux'
+  require 'artcom/y60'
+  require 'artcom/watchdog'
+  require 'artcom/app'
+
   # Multistage
-    set :stages, %w(testing production)
-    set :default_stage, "testing"
+  set :stages, %w(testing production)
+  set :default_stage, "testing"
 
   # User details
   _cset :user,          'artcom'
@@ -48,7 +53,7 @@ configuration.load do
   # Git settings for capistrano
   default_run_options[:pty]     = true # needed for git password prompts
   ssh_options[:forward_agent]   = true # use the keys for the person running the cap command to check out the app
-
+  # setup directory structure
   after 'deploy:setup' do
     run "mkdir -p #{shared_path}/asl"
     run "mkdir -p #{shared_path}/y60"

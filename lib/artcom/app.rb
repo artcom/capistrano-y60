@@ -9,8 +9,10 @@ configuration = Capistrano::Configuration.respond_to?(:instance) ?
 
 configuration.load do
   # --------------------------------------------
-  # Task chains
+  # Task hooks
   # --------------------------------------------
+  after "deploy:setup", "y60:app:setup_directory_structure"
+
   after "deploy:finalize_update", "y60:app:generate_watchdog_xml"
   after "deploy:finalize_update", "y60:app:generate_app_settings_js"
 
@@ -19,6 +21,15 @@ configuration.load do
   # --------------------------------------------
   namespace :y60 do
     namespace :app do
+
+      desc "setup directory structure"
+      task :setup_directory_structure, :roles => :app do
+        run "mkdir -p #{shared_path}/asl"
+        run "mkdir -p #{shared_path}/y60"
+        run "mkdir -p #{shared_path}/watchdog"
+        run "mkdir -p #{shared_path}/config"
+        run "mkdir -p #{shared_path}/content"
+      end
 
       desc "generate watchdog.xml"
       task :generate_watchdog_xml, :roles => :app do
@@ -55,7 +66,7 @@ configuration.load do
         end
       end
 
-      desc "Set environment variable CONTENT_DIR"
+      desc "Set environment variable 'CONTENT_DIR'"
       task :update_environment, :roles => :app do
         next if find_servers_for_task(current_task).empty?
         run "echo 'export #{application.to_s.upcase}_CONTENT_DIR=#{shared_path}/content' | #{sudo} tee /etc/profile.d/#{application}.sh", :pty => true

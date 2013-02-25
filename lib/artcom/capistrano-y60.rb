@@ -53,12 +53,4 @@ configuration.load do
   # Git settings for capistrano
   default_run_options[:pty]     = true # needed for git password prompts
   ssh_options[:forward_agent]   = true # use the keys for the person running the cap command to check out the app
-  # setup directory structure
-  after 'deploy:setup' do
-    run "mkdir -p #{shared_path}/asl"
-    run "mkdir -p #{shared_path}/y60"
-    run "mkdir -p #{shared_path}/watchdog"
-    run "mkdir -p #{shared_path}/config"
-    run "mkdir -p #{shared_path}/content"
-  end
 end

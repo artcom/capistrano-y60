@@ -9,7 +9,7 @@ configuration = Capistrano::Configuration.respond_to?(:instance) ?
 
 configuration.load do
   # --------------------------------------------
-  # Task chains
+  # Task hooks
   # --------------------------------------------
   after "deploy:setup", "linux:add_autostart"
   after "deploy:setup", "linux:add_kill_watchdog_desktop_link"

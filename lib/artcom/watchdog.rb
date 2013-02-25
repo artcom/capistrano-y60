@@ -24,7 +24,7 @@ configuration.load do
       run "echo '#{shared_path}/asl/lib' | #{sudo} tee /etc/ld.so.conf.d/asl.conf", :pty => true
       run "#{sudo} /sbin/ldconfig", :pty => true
     end
-    desc "Setup environment variable watchdog 'WATCHDOG_DIR"
+    desc "Setup environment variable watchdog 'WATCHDOG_DIR'"
     task :update_environment, :roles => :app do
       next if find_servers_for_task(current_task).empty?
       run "echo 'export WATCHDOG_DIR=#{shared_path}/watchdog/bin' | #{sudo} tee /etc/profile.d/watchdog.sh", :pty => true

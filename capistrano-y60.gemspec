@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "capistrano-y60"
-  s.version = "0.0.10"
+  s.version = "0.0.11"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Gunnar Marten"]
@@ -20,14 +20,12 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "capistrano-y60.gemspec",
-    "lib/artcom/app_deploy.rb",
-    "lib/artcom/asl_deploy.rb",
+    "lib/artcom/app.rb",
     "lib/artcom/capistrano-y60.rb",
     "lib/artcom/common.rb",
-    "lib/artcom/content_deploy.rb",
     "lib/artcom/linux.rb",
-    "lib/artcom/watchdog_deploy.rb",
-    "lib/artcom/y60_deploy.rb"
+    "lib/artcom/watchdog.rb",
+    "lib/artcom/y60.rb"
   ]
   s.homepage = "https://github.com/artcom/capistrano-y60"
   s.require_paths = ["lib"]

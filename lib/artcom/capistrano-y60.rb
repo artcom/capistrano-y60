@@ -1,20 +1,11 @@
+# Capistrano2 differentiator
+load 'deploy' if respond_to?(:namespace)
+Dir['vendor/plugins/*/recipes/*.rb'].each { |plugin| load(plugin) }
 
-configuration = Capistrano::Configuration.respond_to?(:instance) ?
-  Capistrano::Configuration.instance(:must_exist) :
-  Capistrano.configuration(:must_exist)
-  
-configuration.load do
-  
-#
-# Configuration
-#
-
-require 'rake'
+# Required gems/libraries
 require 'rubygems'
 require 'fileutils'
-
-# Multistage
- _cset(:default_stage) { 'testing' }
+require 'artcom/common'
 begin
   require 'capistrano/ext/multistage' # gem install capistrano-ext
 rescue LoadError
@@ -26,6 +17,17 @@ begin
 rescue LoadError
   puts "'railsless-deploy' gem is required on the local machine"
 end
+
+configuration = Capistrano::Configuration.respond_to?(:instance) ?
+  Capistrano::Configuration.instance(:must_exist) :
+  Capistrano.configuration(:must_exist)
+
+configuration.load do
+
+
+# Multistage
+  set :stages, %w(testing production)
+  set :default_stage, "testing"
 
 # load library
 require 'artcom/common'

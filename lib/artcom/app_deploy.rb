@@ -8,34 +8,58 @@ configuration = Capistrano::Configuration.respond_to?(:instance) ?
   Capistrano.configuration(:must_exist)
 
 configuration.load do
-  namespace :app_deploy do
+  # --------------------------------------------
+  # Task chains
+  # --------------------------------------------
+  after "deploy:finalize_update", "y60:app:generate_watchdog_xml"
+  after "deploy:finalize_update", "y60:app:generate_app_settings_js"
 
-    desc "generate watchdog.xml"
-    task :generate_watchdog_xml, :roles => :app do
-      require 'erb'
-      default_template = <<-XML
-  <WatchdogConfig/>
-      XML
-      location = fetch(:watchdog_xml_dir, "config") + '/watchdog.xml.erb'
-      template = File.file?(location) ? File.read(location) : default_template
-      config = ERB.new(template)
-      myLocation = "#{shared_path}/config/watchdog.xml"
-      put config.result(binding), myLocation
-      puts "Generated watchdog.xml at #{myLocation}."
-    end
+  # --------------------------------------------
+  # application specific tasks
+  # --------------------------------------------
+  namespace :y60 do
+    namespace :app do
 
-    desc "generate app_settings.js"
-    task :generate_app_settings_js , :roles => :app do
-      require 'erb'
-      js_template = <<-JS
-  var app_settings = app_settings || {};
-      JS
-      location = fetch(:app_settings_dir, "config") + '/app_settings.js.erb'
-      template = File.file?(location) ? File.read(location) : js_template
-      config = ERB.new(template)
-      myLocation = "#{shared_path}/config/app_settings.js"
-      put config.result(binding), myLocation
-      puts "Generated app_settings.js at #{myLocation}."
+      desc "generate watchdog.xml"
+      task :generate_watchdog_xml, :roles => :app do
+        require 'erb'
+        default_template = <<-XML
+    <WatchdogConfig/>
+        XML
+        location = fetch(:watchdog_xml_dir, "config") + '/watchdog.xml.erb'
+        template = File.file?(location) ? File.read(location) : default_template
+        config = ERB.new(template)
+        myLocation = "#{shared_path}/config/watchdog.xml"
+        put config.result(binding), myLocation
+        puts "Generated watchdog.xml at #{myLocation}."
+      end
+
+      desc "generate app_settings.js"
+      task :generate_app_settings_js , :roles => :app do
+        require 'erb'
+        js_template = <<-JS
+    var app_settings = app_settings || {};
+        JS
+        location = fetch(:app_settings_dir, "config") + '/app_settings.js.erb'
+        template = File.file?(location) ? File.read(location) : js_template
+        config = ERB.new(template)
+        myLocation = "#{shared_path}/config/app_settings.js"
+        put config.result(binding), myLocation
+        puts "Generated app_settings.js at #{myLocation}."
+      end
+      desc "rsync content"
+      task :rsync_content, :roles => :app do
+        servers = find_servers_for_task(current_task)
+        servers.each do |server|
+          system("rsync -uva --delete --exclude '.*' '#{content_dir}' '#{user}@#{server}:#{shared_path}/content/'")
+        end
+      end
+
+      desc "Set environment variable CONTENT_DIR"
+      task :update_environment, :roles => :app do
+        next if find_servers_for_task(current_task).empty?
+        run "echo 'export #{application.to_s.upcase}_CONTENT_DIR=#{shared_path}/content' | #{sudo} tee /etc/profile.d/#{application}.sh", :pty => true
+      end
     end
   end
 end

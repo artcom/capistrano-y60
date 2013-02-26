@@ -11,11 +11,11 @@ configuration.load do
   # --------------------------------------------
   # Task hooks
   # --------------------------------------------
-  after "deploy:setup", "linux:add_autostart"
-  after "deploy:setup", "linux:add_kill_watchdog_desktop_link"
-  after "deploy:setup", "linux:add_startapp_desktop_link"
+  after "deploy:setup", "y60:linux:add_autostart"
+  after "deploy:setup", "y60:linux:add_kill_watchdog_desktop_link"
+  after "deploy:setup", "y60:linux:add_startapp_desktop_link"
 
-  after "deploy:finalize_update", "linux:generate_autostart_script"
+  after "deploy:finalize_update", "y60:linux:generate_autostart_script"
   # --------------------------------------------
   # common linux tasks
   # --------------------------------------------

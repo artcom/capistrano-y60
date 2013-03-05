@@ -103,6 +103,15 @@ Applications are deployed into the home directory.
 * to find asl and the y60 engine ldconfig config files are placed in /etc/ld.so.conf.d/
 * desktop links are placed in ~/Desktop to start the application and kill it
  
+## Deploying Y60, ASL, Watchdog
+
+Because the target platform almost always differs from the development
+platform, the deployment is based on building y60 engine elsewhere (e.q.
+VM) and then deploy it with capistrano.
+Therefore get yourself a y60.tar.gz with the engine and then deploy it
+with `cap <stage> y60:copy_binary`.
+
+
 - - -
 *Copyright (c) [ART+COM AG](http://www.artcom.de/), Berlin Germany 2013 - Author: Gunnar Marten (gunnar.marten@artcom.de)*
 

@@ -12,6 +12,7 @@ configuration.load do
   # Task hooks
   # --------------------------------------------
   after "deploy:setup", "y60:app:setup_directory_structure"
+  after "deploy:setup", "y60:app:update_environment"
 
   after "deploy:finalize_update", "y60:app:generate_watchdog_xml"
   after "deploy:finalize_update", "y60:app:generate_app_settings_js"

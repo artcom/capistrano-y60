@@ -74,5 +74,5 @@ Other useful tasks are as follows:
 
  
 - - -
-*Copyright (c) [ART+COM AG](http://www.artcom.de/), Berlin Germany 2012 - Author: Gunnar Marten (gunnar.marten@artcom.de)*
+*Copyright (c) [ART+COM AG](http://www.artcom.de/), Berlin Germany 2013 - Author: Gunnar Marten (gunnar.marten@artcom.de)*
 

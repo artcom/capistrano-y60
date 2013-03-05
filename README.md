@@ -17,13 +17,11 @@ In your project repository or your deployment repository add the usual
 capistrano hooks.
 Then edit the deploy.rb and add the following lines:
 
-<code>
-require 'artcom/capistrano-y60' 
-set :stages, %w(testing production)
-set :content_dirs, %w(/path/to/content ..)
-set :application, "kids-table"
-set :repository, "repo.git" unless defined?(repository)
-</code>
+    require 'artcom/capistrano-y60' 
+    set :stages, %w(testing production)
+    set :content_dirs, %w(/path/to/content ..)
+    set :application, "kids-table"
+    set :repository, "repo.git" unless defined?(repository)
 
 No other settings are required as they are predefined in capistrano-y60.
 You can overwrite the defaults by just setting the value
@@ -40,7 +38,6 @@ the target system environment already hooked
 #### deploy:setup hooks
 Deploy:setup should only called once to setting up the target system environment.
 After deploy:setup the following tasks will be automatically called:
-<code>
     cap y60:update_environment                   # Setup environment variable 'Y60_DIR'
     cap y60:update_ldconfig                      # Add asl/lib and y60/lib to ldconfig 
     cap watchdog:update_environment              # Setup environment variable 'WATCHDOG_DIR'
@@ -51,26 +48,21 @@ After deploy:setup the following tasks will be automatically called:
     cap y60:linux:add_autostart                  # Add autostart behaviour
     cap y60:linux:add_kill_watchdog_desktop_link # Add kill watchdog Desktop link
     cap y60:linux:add_startapp_desktop_link      # Add start App Desktop link
-</code>
 
 #### deploy hooks
 These tasks will be called everytime the project is deployed
 After deploy:finalize_update the following tasks will be automatically called:
-<code>
     cap y60:app:generate_app_settings_js         # generate app_settings.js
     cap y60:app:generate_watchdog_xml            # generate watchdog.xml
     cap y60:linux:generate_autostart_script      # generate application autostart script
-</code>
 
 ### Other tasks
-<code>
     cap linux:deploy_ssh_key                     # deploy ssh key
     cap linux:reboot                             # Reboot the machine
     cap linux:shutdown                           # shutdown the machine
     cap y60:app:rsync_content                    # rsync content
     cap y60:app:setup_directory_structure        # setup directory structure
     cap y60:copy_binary                          # Copy Y60 engine including asl, watchdog
-</code>
 
  
 - - -

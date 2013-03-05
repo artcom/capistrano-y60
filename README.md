@@ -72,6 +72,36 @@ Other useful tasks are as follows:
     cap y60:linux:restart_app                    # restart the app
     cap y60:linux:start_app                      # start watchdog & application
 
+## Capistrano deployment structure
+
+Capistrano deploy_to folder:
+
+* releases - last x deployed releases for easy rollback
+* current - symlink to the last successfully deployed release
+* shared - folder for stuff that's not in the release and is shared over
+  the different releases like content or settings 
+
+## A deployed target system layout 
+
+### Application folder
+Applications are deployed into the home directory. 
+
+* application folder includes:
+    * in shared/config  - the watchdog.xml and an autostart script which uses this watchdog.xml
+    * in shared/content - content like movies which are not in the git repository
+    * in shared/y60 - y60 engine
+    * in shared/asl - asl artcom standard library
+    * in shared/watchdog - watchdog
+
+### Autostart
+* ~/bin/autostart - script that executes all scripts in ~/Autostart during system startup
+* ~/Autostart - place for your autostart scripts that should start during system boot
+* ~/.config/autostart/autostart.sh.desktop - gnome autostart folder where a desktop link is placed that executes the script ~/bin/autostart
+
+### Environment
+* export scripts for Y60_DIR, WATCHDOG_DIR, CONTENT_DIR are placed in /etc/profile.d/ and helps the application to find all dependencies
+* to find asl and the y60 engine ldconfig config files are placed in /etc/ld.so.conf.d/
+* desktop links are placed in ~/Desktop to start the application and kill it
  
 - - -
 *Copyright (c) [ART+COM AG](http://www.artcom.de/), Berlin Germany 2013 - Author: Gunnar Marten (gunnar.marten@artcom.de)*

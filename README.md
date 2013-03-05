@@ -1,3 +1,6 @@
+* auto-gen TOC:
+{:toc}
+
 # Capistrano-y60 gem
 This is a gem with a collection of tasks for deploying y60 applications.
 

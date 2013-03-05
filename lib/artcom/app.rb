@@ -63,7 +63,9 @@ configuration.load do
       task :rsync_content, :roles => :app do
         servers = find_servers_for_task(current_task)
         servers.each do |server|
-          system("rsync -uva --delete --exclude '.*' '#{content_dir}' '#{user}@#{server}:#{shared_path}/content/'")
+          content_dirs.each do |dir|
+            system("rsync -uva --delete --exclude '.*' '#{dir}' '#{user}@#{server}:#{shared_path}/content/'")
+          end
         end
       end
 

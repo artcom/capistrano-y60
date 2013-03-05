@@ -4,13 +4,14 @@ This is a gem with a collection of tasks for deploying y60 applications.
 ## Installing the gem
 Best way to install the gem is to use bundler. Therefore create a
 Gemfile and add the following requirements:
-<code>
-source "https://rubygems.org"
-gem "capistrano", ">=2.12.0"
-gem "railsless-deploy", ">=1.0.2"
-gem "capistrano-ext", ">=1.2.1"
-gem "capistrano-y60", ">=0.0.15", :git => "git://github.com/artcom/capistrano-y60.git"
-</code>
+
+    source "https://rubygems.org"
+    gem "capistrano", ">=2.12.0"
+    gem "railsless-deploy", ">=1.0.2"
+    gem "capistrano-ext", ">=1.2.1"
+    gem "capistrano-y60", ">=0.0.15", :git => "git://github.com/artcom/capistrano-y60.git"
+
+Call `bundle install` to install all required gems
 
 ## Usage
 In your project repository or your deployment repository add the usual
@@ -32,12 +33,13 @@ A list with all available deployment tasks can be seen with the command
  `cap -T`
 
 ### Auto hooks
-During deploy:setup and deploy there are several tasks for setting up
+During `deploy:setup` and deploy there are several tasks for setting up
 the target system environment already hooked 
 
 #### deploy:setup hooks
 Deploy:setup should only called once to setting up the target system environment.
-After deploy:setup the following tasks will be automatically called:
+After `deploy:setup` the following tasks will be automatically called:
+
     cap y60:update_environment                   # Setup environment variable 'Y60_DIR'
     cap y60:update_ldconfig                      # Add asl/lib and y60/lib to ldconfig 
     cap watchdog:update_environment              # Setup environment variable 'WATCHDOG_DIR'
@@ -51,18 +53,24 @@ After deploy:setup the following tasks will be automatically called:
 
 #### deploy hooks
 These tasks will be called everytime the project is deployed
-After deploy:finalize_update the following tasks will be automatically called:
+After `deploy:finalize_update` the following tasks will be automatically called:
+
     cap y60:app:generate_app_settings_js         # generate app_settings.js
     cap y60:app:generate_watchdog_xml            # generate watchdog.xml
     cap y60:linux:generate_autostart_script      # generate application autostart script
 
 ### Other tasks
+Other useful tasks are as follows:
+
     cap linux:deploy_ssh_key                     # deploy ssh key
     cap linux:reboot                             # Reboot the machine
     cap linux:shutdown                           # shutdown the machine
     cap y60:app:rsync_content                    # rsync content
     cap y60:app:setup_directory_structure        # setup directory structure
     cap y60:copy_binary                          # Copy Y60 engine including asl, watchdog
+    cap y60:linux:kill_watchdog                  # kill watchdog
+    cap y60:linux:restart_app                    # restart the app
+    cap y60:linux:start_app                      # start watchdog & application
 
  
 - - -

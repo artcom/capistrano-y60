@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "capistrano-y60"
-  s.version = "0.0.14"
+  s.version = "0.0.15"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Gunnar Marten"]
-  s.date = "2013-02-26"
+  s.date = "2013-03-05"
   s.description = "Y60 deployment recipes for Capistrano"
   s.email = "gunnar.marten@artcom.de"
   s.executables = ["update_install_pack_get_y60.sh"]
@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = "https://github.com/artcom/capistrano-y60"
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.24"
+  s.rubygems_version = "1.8.23"
   s.summary = "Y60 deployment recipes for Capistrano"
 
   if s.respond_to? :specification_version then

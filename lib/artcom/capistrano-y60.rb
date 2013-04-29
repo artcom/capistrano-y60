@@ -47,8 +47,8 @@ configuration.load do
   set :git_shallow_clone, 1
   set :branch,        'master'
   set :keep_releases, 5
-  set :deploy_via,    'copy'
-  set :copy_strategy, 'export'
+  set :deploy_via,    :copy
+  set :copy_strategy, :export
 
   # Git settings for capistrano
   default_run_options[:pty]     = true # needed for git password prompts

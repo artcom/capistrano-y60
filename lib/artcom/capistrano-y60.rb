@@ -39,7 +39,7 @@ configuration.load do
 
   # Application details
   _cset(:runner)        { user }
-  _cset(:y60_install_dir)  { "#{shared_path}" }
+  #_cset(:y60_install_dir)  { "#{shared_path}" }
   set :use_sudo,      false
 
   # SCM settings

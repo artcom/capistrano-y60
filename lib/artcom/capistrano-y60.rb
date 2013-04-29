@@ -38,18 +38,17 @@ configuration.load do
   _cset(:group)         { user }
 
   # Application details
-  _cset(:application)      { abort "Please specify the short name of your application, set :application, 'foo'" }
   _cset(:runner)        { user }
-  _cset :use_sudo,      false
   _cset(:y60_install_dir)  { "#{shared_path}" }
+  set :use_sudo,      false
 
   # SCM settings
-  _cset :scm,           'git'
-  _cset :git_shallow_clone, 1
-  _cset :branch,        'master'
-  _cset :keep_releases, 5
-  _cset :deploy_via,    'copy'
-  _cset :copy_strategy, 'export'
+  set :scm,           'git'
+  set :git_shallow_clone, 1
+  set :branch,        'master'
+  set :keep_releases, 5
+  set :deploy_via,    'copy'
+  set :copy_strategy, 'export'
 
   # Git settings for capistrano
   default_run_options[:pty]     = true # needed for git password prompts

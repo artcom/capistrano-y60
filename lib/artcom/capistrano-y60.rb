@@ -41,6 +41,7 @@ configuration.load do
   _cset(:application)      { abort "Please specify the short name of your application, set :application, 'foo'" }
   _cset(:runner)        { user }
   _cset :use_sudo,      false
+  _cset :y60_install_dir, '#{shared_path}'
 
   # SCM settings
   _cset :scm,           'git'

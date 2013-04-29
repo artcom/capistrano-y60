@@ -25,9 +25,9 @@ configuration.load do
 
       desc "setup directory structure"
       task :setup_directory_structure, :roles => :app do
-        run "mkdir -p #{shared_path}/asl"
-        run "mkdir -p #{shared_path}/y60"
-        run "mkdir -p #{shared_path}/watchdog"
+        run "mkdir -p #{y60_install_dir}/asl"
+        run "mkdir -p #{y60_install_dir}/y60"
+        run "mkdir -p #{y60_install_dir}/watchdog"
         run "mkdir -p #{shared_path}/config"
         run "mkdir -p #{shared_path}/content"
       end

@@ -21,18 +21,18 @@ configuration.load do
 
     desc "Add asl/lib to ldconfig"
     task :update_ldconfig, :roles => :app do
-      run "echo '#{shared_path}/asl/lib' | #{sudo} tee /etc/ld.so.conf.d/asl.conf", :pty => true
+      run "echo '#{y60_install_dir}/asl/lib' | #{sudo} tee /etc/ld.so.conf.d/asl.conf", :pty => true
       run "#{sudo} /sbin/ldconfig", :pty => true
     end
     desc "Setup environment variable watchdog 'WATCHDOG_DIR'"
     task :update_environment, :roles => :app do
       next if find_servers_for_task(current_task).empty?
-      run "echo 'export WATCHDOG_DIR=#{shared_path}/watchdog/bin' | #{sudo} tee /etc/profile.d/watchdog.sh", :pty => true
+      run "echo 'export WATCHDOG_DIR=#{y60_install_dir}/watchdog/bin' | #{sudo} tee /etc/profile.d/watchdog.sh", :pty => true
     end
     desc "Copy watchdog including asl"
     task :copy_binary, :roles => :app do
-      top.upload("watchdog.tar.gz", "#{shared_path}", :via=> :scp)
-      run "tar -C '#{shared_path}' -xzvf '#{shared_path}/watchdog.tar.gz'"
+      top.upload("watchdog.tar.gz", "#{y60_install_dir}", :via=> :scp)
+      run "tar -C '#{y60_install_dir}' -xzvf '#{y60_install_dir}/watchdog.tar.gz'"
     end
   end
 end

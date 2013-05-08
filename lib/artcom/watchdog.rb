@@ -11,6 +11,7 @@ configuration.load do
   # --------------------------------------------
   # Task hooks
   # --------------------------------------------
+  after "deploy:setup", "watchdog:setup_directory_structure"
   after "deploy:setup", "watchdog:update_environment"
   after "deploy:setup", "watchdog:update_ldconfig"
 
@@ -18,6 +19,12 @@ configuration.load do
   # watchdog specific tasks
   # --------------------------------------------
   namespace :watchdog do
+
+    desc "setup directory structure"
+    task :setup_directory_structure, :roles => :app do
+      run "mkdir -p #{y60_install_dir}/asl"
+      run "mkdir -p #{y60_install_dir}/watchdog"
+    end
 
     desc "Add asl/lib to ldconfig"
     task :update_ldconfig, :roles => :app do

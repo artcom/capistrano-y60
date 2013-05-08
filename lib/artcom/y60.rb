@@ -11,6 +11,7 @@ configuration.load do
   # --------------------------------------------
   # Task hooks
   # --------------------------------------------
+  after "deploy:setup", "y60:setup_directory_structure"
   after "deploy:setup", "y60:update_ldconfig"
   after "deploy:setup", "y60:update_environment"
 
@@ -18,6 +19,12 @@ configuration.load do
   # y60 specific tasks
   # --------------------------------------------
   namespace :y60 do
+
+    desc "setup directory structure"
+    task :setup_directory_structure, :roles => :app do
+      run "mkdir -p #{y60_install_dir}/asl"
+      run "mkdir -p #{y60_install_dir}/y60"
+    end
 
     desc "Add asl/lib & y60/lib to ldconfig"
     task :update_ldconfig, :roles => :app do

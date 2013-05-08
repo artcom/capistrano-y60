@@ -25,9 +25,6 @@ configuration.load do
 
       desc "setup directory structure"
       task :setup_directory_structure, :roles => :app do
-        run "mkdir -p #{y60_install_dir}/asl"
-        run "mkdir -p #{y60_install_dir}/y60"
-        run "mkdir -p #{y60_install_dir}/watchdog"
         run "mkdir -p #{shared_path}/config"
         run "mkdir -p #{shared_path}/content"
       end
@@ -69,7 +66,7 @@ configuration.load do
         end
       end
 
-      desc "Set environment variable 'CONTENT_DIR'"
+      desc "Set environment variable application content dir"
       task :update_environment, :roles => :app do
         next if find_servers_for_task(current_task).empty?
         run "echo 'export #{application.to_s.upcase.sub( %r{[\W]+}, '' )}_CONTENT_DIR=#{shared_path}/content' | #{sudo} tee /etc/profile.d/#{application}.sh", :pty => true

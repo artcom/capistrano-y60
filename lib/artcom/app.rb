@@ -69,7 +69,7 @@ configuration.load do
       desc "Set environment variable application content dir"
       task :update_environment, :roles => :app do
         next if find_servers_for_task(current_task).empty?
-        run "echo 'export #{application.to_s.upcase.sub( %r{[\W]+}, '' )}_CONTENT_DIR=#{shared_path}/content' | #{sudo} tee /etc/profile.d/#{application}.sh", :pty => true
+        run "echo 'export #{application.to_s.upcase.gsub( %r{[\W]+}, '' )}_CONTENT_DIR=#{shared_path}/content' | #{sudo} tee /etc/profile.d/#{application}.sh", :pty => true
       end
     end
   end

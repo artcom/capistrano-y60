@@ -54,7 +54,7 @@ configuration.load do
         put myScript, myLocation
         run "chmod +x #{shared_path}/config/#{application}"
         puts "Generated autostart at #{myLocation}."
-        run "ln -sf #{shared_path}/config/#{application} #{deploy_to}/../Autostart"
+        run "ln -sf #{shared_path}/config/#{application} #{deploy_to}/../Autostart/#{application} "
         puts "symlinked to #{deploy_to}/../Autostart."
       end
 

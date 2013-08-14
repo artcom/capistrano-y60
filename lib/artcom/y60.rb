@@ -41,6 +41,7 @@ configuration.load do
 
     desc "Copy Y60 engine including asl, watchdog"
     task :copy_binary, :roles => :app do
+      run "mkdir -p #{y60_install_dir}"
       top.upload("y60.tar.gz", "#{y60_install_dir}", :via=> :scp)
       run "tar -C '#{y60_install_dir}' -xzvf '#{y60_install_dir}/y60.tar.gz'"
     end

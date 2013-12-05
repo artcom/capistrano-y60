@@ -30,8 +30,8 @@ configuration.load do
   require 'artcom/app'
 
   # Multistage
-  _cset :stages, %w(testing production)
-  _cset :default_stage, "testing"
+  _cset :stages, %w()
+  _cset :default_stage, ""
 
   # User details
   _cset :user,          'artcom'

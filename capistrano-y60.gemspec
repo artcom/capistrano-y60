@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "capistrano-y60"
-  s.version = "0.0.25"
+  s.version = "0.0.27"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Gunnar Marten"]
-  s.date = "2013-06-20"
+  s.date = "2013-12-05"
   s.description = "Y60 deployment recipes for Capistrano"
   s.email = "gunnar.marten@artcom.de"
   s.executables = ["update_install_pack_get_y60.sh"]
@@ -27,7 +27,8 @@ Gem::Specification.new do |s|
     "lib/artcom/common.rb",
     "lib/artcom/linux.rb",
     "lib/artcom/watchdog.rb",
-    "lib/artcom/y60.rb"
+    "lib/artcom/y60.rb",
+    "lib/artcom/y60component.rb"
   ]
   s.homepage = "https://github.com/artcom/capistrano-y60"
   s.require_paths = ["lib"]

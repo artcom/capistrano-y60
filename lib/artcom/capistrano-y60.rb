@@ -26,6 +26,7 @@ configuration.load do
   # Load library
   require 'artcom/linux'
   require 'artcom/y60'
+  require 'artcom/y60component'
   require 'artcom/watchdog'
   require 'artcom/app'
 
@@ -39,6 +40,7 @@ configuration.load do
 
   # Application details
   _cset(:runner)        { user }
+  _cset :y60_components, %w()
   #_cset(:y60_install_dir)  { "#{shared_path}" }
   set :use_sudo,      false
 

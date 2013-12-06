@@ -11,7 +11,7 @@ begin
     gemspec.homepage    = "https://github.com/artcom/capistrano-y60"
     gemspec.authors     = ["Gunnar Marten"]
     # Gem dependencies
-    gemspec.add_dependency('capistrano', '>= 2.12.0')
+    gemspec.add_dependency('capistrano', '= 2.15.5')
     gemspec.add_dependency('capistrano-ext')
     gemspec.add_dependency('railsless-deploy')
 

@@ -4,18 +4,12 @@ load 'deploy' if respond_to?(:namespace)
 # Required gems/libraries
 require 'rubygems'
 require 'fileutils'
-require 'artcom/common'
 begin
   require 'capistrano/ext/multistage' # gem install capistrano-ext
 rescue LoadError
   puts "'capistrano-ext' gem is required on the local machine"
 end
 
-begin
-  require 'railsless-deploy'
-rescue LoadError
-  puts "'railsless-deploy' gem is required on the local machine"
-end
 
 configuration = Capistrano::Configuration.respond_to?(:instance) ?
   Capistrano::Configuration.instance(:must_exist) :
@@ -23,8 +17,12 @@ configuration = Capistrano::Configuration.respond_to?(:instance) ?
 
 configuration.load do
 
+  begin
+    require 'artcom/capistrano-asl'
+  rescue LoadError
+    puts "'artcom/capistrano-asl' gem is required on the local machine"
+  end
   # Load library
-  require 'artcom/linux'
   require 'artcom/y60'
   require 'artcom/y60component'
   require 'artcom/app'

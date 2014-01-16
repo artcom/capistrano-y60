@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "capistrano-y60"
-  s.version = "0.0.29"
+  s.version = "0.0.30"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Gunnar Marten"]
@@ -26,8 +26,6 @@ Gem::Specification.new do |s|
     "capistrano-y60.gemspec",
     "lib/artcom/app.rb",
     "lib/artcom/capistrano-y60.rb",
-    "lib/artcom/common.rb",
-    "lib/artcom/linux.rb",
     "lib/artcom/y60.rb",
     "lib/artcom/y60component.rb"
   ]

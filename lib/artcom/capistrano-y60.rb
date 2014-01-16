@@ -23,9 +23,9 @@ configuration.load do
     puts "'artcom/capistrano-asl' gem is required on the local machine"
   end
   # Load library
+  require 'artcom/app'
   require 'artcom/y60'
   require 'artcom/y60component'
-  require 'artcom/app'
 
   # Multistage
   _cset :stages, %w()

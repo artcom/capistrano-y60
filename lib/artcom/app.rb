@@ -29,32 +29,36 @@ configuration.load do
         run "mkdir -p #{shared_path}/content"
       end
 
+      desc "Set environment variable application content dir"
+      task :update_environment, :roles => :app do
+        next if find_servers_for_task(current_task).empty?
+        run "echo 'export #{application.to_s.upcase.gsub( %r{[\W]+}, '' )}_CONTENT_DIR=#{shared_path}/content' | #{sudo} tee /etc/profile.d/#{application}.sh", :pty => true
+      end
+
       desc "generate watchdog.xml"
       task :generate_watchdog_xml, :roles => :app do
         require 'erb'
-        default_template = <<-XML
-    <WatchdogConfig/>
-        XML
         location = fetch(:watchdog_xml_dir, "config") + '/watchdog.xml.erb'
-        template = File.file?(location) ? File.read(location) : default_template
-        config = ERB.new(template)
-        myLocation = "#{shared_path}/config/watchdog.xml"
-        put config.result(binding), myLocation
-        puts "Generated watchdog.xml at #{myLocation}."
+        template = File.file?(location) ? File.read(location) : nil
+        if template
+          config = ERB.new(template)
+          myLocation = "#{shared_path}/config/watchdog.xml"
+          put config.result(binding), myLocation
+          puts "Generated watchdog.xml at #{myLocation}."
+        end
       end
 
       desc "generate app_settings.js"
       task :generate_app_settings_js , :roles => :app do
         require 'erb'
-        js_template = <<-JS
-    var app_settings = app_settings || {};
-        JS
         location = fetch(:app_settings_dir, "config") + '/app_settings.js.erb'
-        template = File.file?(location) ? File.read(location) : js_template
-        config = ERB.new(template)
-        myLocation = "#{shared_path}/config/app_settings.js"
-        put config.result(binding), myLocation
-        puts "Generated app_settings.js at #{myLocation}."
+        template = File.file?(location) ? File.read(location) : nil
+        if template
+          config = ERB.new(template)
+          myLocation = "#{shared_path}/config/app_settings.js"
+          put config.result(binding), myLocation
+          puts "Generated app_settings.js at #{myLocation}."
+        end
       end
       desc "rsync content"
       task :rsync_content, :roles => :app do
@@ -64,12 +68,6 @@ configuration.load do
             system("rsync -uva --delete --exclude '.*' '#{dir}' '#{user}@#{server}:#{shared_path}/content/'")
           end
         end
-      end
-
-      desc "Set environment variable application content dir"
-      task :update_environment, :roles => :app do
-        next if find_servers_for_task(current_task).empty?
-        run "echo 'export #{application.to_s.upcase.gsub( %r{[\W]+}, '' )}_CONTENT_DIR=#{shared_path}/content' | #{sudo} tee /etc/profile.d/#{application}.sh", :pty => true
       end
     end
   end

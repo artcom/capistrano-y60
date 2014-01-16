@@ -14,21 +14,25 @@ configuration.load do
   after "deploy:setup", "y60:setup_directory_structure"
   after "deploy:setup", "y60:update_ldconfig"
   after "deploy:setup", "y60:update_environment"
+  after "deploy:setup", "y60:add_startapp_desktop_link"
+  after "deploy:setup", "y60:generate_autostart_script"
 
   # --------------------------------------------
   # y60 specific tasks
   # --------------------------------------------
   namespace :y60 do
 
+    # --------------------------------------------
+    # setup target system environment
+    # --------------------------------------------
+
     desc "setup directory structure"
     task :setup_directory_structure, :roles => :app do
-      run "mkdir -p #{y60_install_dir}/asl"
       run "mkdir -p #{y60_install_dir}/y60"
     end
 
-    desc "Add asl/lib & y60/lib to ldconfig"
+    desc "Add y60/lib to ldconfig"
     task :update_ldconfig, :roles => :app do
-      run "echo '#{y60_install_dir}/asl/lib' | #{sudo} tee /etc/ld.so.conf.d/asl.conf", :pty => true
       run "echo '#{y60_install_dir}/y60/lib' | #{sudo} tee /etc/ld.so.conf.d/y60.conf", :pty => true
       run "#{sudo} /sbin/ldconfig", :pty => true
     end
@@ -39,7 +43,77 @@ configuration.load do
       run "echo 'export Y60_DIR=#{y60_install_dir}/y60/bin' | #{sudo} tee /etc/profile.d/y60.sh", :pty => true
     end
 
-    desc "Copy Y60 engine including asl, watchdog"
+    # --------------------------------------------
+    # autostart behaviour
+    # --------------------------------------------
+
+    desc "generate autostart script"
+    task :generate_autostart_script, :roles => :app do
+      myScript = <<-SCRIPT
+  #!/bin/sh
+  $WATCHDOG_DIR/watchdog #{shared_path}/config/watchdog.xml
+      SCRIPT
+      myLocation = "#{shared_path}/config/#{application}"
+      put myScript, myLocation
+      run "chmod +x #{shared_path}/config/#{application}"
+      puts "Generated autostart at #{myLocation}."
+      run "ln -sf #{shared_path}/config/#{application} #{deploy_to}/../Autostart/#{application} "
+      puts "symlinked to #{deploy_to}/../Autostart."
+    end
+    desc "Add start app desktop link"
+    task :add_startapp_desktop_link, :roles => :app do
+      myAutostart = <<-SCRIPT
+  [Desktop Entry]
+  Type=Application
+  Exec=#{shared_path}/config/#{application}
+  Hidden=false
+  NoDisplay=false
+  X-GNOME-Autostart-enabled=true
+  Name[en_US]=#{application}
+  Name=#{application}
+  Comment[en_US]=starts #{application}
+  Comment=starts #{application}
+      SCRIPT
+      myLocation = "#{deploy_to}/../Desktop/#{application}.sh.desktop"
+      put myAutostart, myLocation
+      run "chmod +x #{deploy_to}/../Desktop/#{application}.sh.desktop"
+    end
+
+    desc "Add kill watchdog and y60 desktop link"
+    task :add_kill_watchdog_and_y60_desktop_link, :roles => :app do
+      myKillWatchdogScript = <<-SCRIPT
+  [Desktop Entry]
+  Type=Application
+  Exec=killall watchdog && killall y60
+  Hidden=false
+  NoDisplay=false
+  X-GNOME-Autostart-enabled=true
+  Name[en_US]=Kill watchdog
+  Name=Kill watchdog
+  Comment[en_US]=kills the watchdog & y60
+  Comment=kills the watchdog & y60
+      SCRIPT
+      myLocation = "#{deploy_to}/../Desktop/kill_#{application}.sh.desktop"
+      put myKillWatchdogScript, myLocation
+      run "chmod +x #{deploy_to}/../Desktop/kill_#{application}.sh.desktop"
+    end
+
+    desc "start watchdog & application"
+    task :start_app, :roles => :app do
+      next if find_servers_for_task(current_task).empty?
+      run "#{shared_path}/config/#{application}"
+    end
+
+    desc "restart the app"
+    task :restart_app, :roles => :app do
+      run "killall y60"
+    end
+
+    # --------------------------------------------
+    # deployment
+    # --------------------------------------------
+
+    desc "Copy Y60 engine"
     task :copy_binary, :roles => :app do
       run "mkdir -p #{y60_install_dir}"
       top.upload("y60.tar.gz", "#{y60_install_dir}", :via=> :scp)

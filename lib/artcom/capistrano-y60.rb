@@ -27,7 +27,6 @@ configuration.load do
   require 'artcom/linux'
   require 'artcom/y60'
   require 'artcom/y60component'
-  require 'artcom/watchdog'
   require 'artcom/app'
 
   # Multistage
@@ -41,7 +40,6 @@ configuration.load do
   # Application details
   _cset(:runner)        { user }
   _cset :y60_components, %w()
-  #_cset(:y60_install_dir)  { "#{shared_path}" }
   set :use_sudo,      false
 
   # SCM settings

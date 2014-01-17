@@ -41,11 +41,24 @@ configuration.load do
       }
     end
 
-    desc "Copy component"
-    task :copy_plugin, :roles => :app do
+    desc "Copy components"
+    task :copy_package, :roles => :app do
       y60_components.each {|c|
-        top.upload("#{c}.tar.gz", "#{components_install_dir}/", :via=> :scp)
-        run "tar -C '#{components_install_dir}/' -xzvf '#{components_install_dir}/#{c}.tar.gz'"
+        run "mkdir -p #{components_install_dir}/#{c}"
+        delete_artifact = false
+        version = fetch("_#{c}_version".to_sym, "1.0.9")
+        target_platform = fetch("_#{c}_target_platform".to_sym, "Linux-x86_64")
+        package = fetch("_#{c}_package".to_sym, "#{c}-#{version}-#{target_platform}.tar.gz")
+        if not File.file?(package)
+          run_locally "scp artifacts@artifacts:pro60/releases/#{package} #{package}"
+          delete_artifact = true
+        end
+        top.upload(package, "#{components_install_dir}", :via=> :scp)
+        if delete_artifact
+          run_locally "rm -rf #{package}"
+        end
+        run "tar -C '#{components_install_dir}/#{c}' --exclude include --strip-components 1 -xzvf '#{components_install_dir}/#{package}'"
+        run "rm #{components_install_dir}/#{package}"
       }
     end
   end

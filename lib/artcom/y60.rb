@@ -114,10 +114,22 @@ configuration.load do
     # --------------------------------------------
 
     desc "Copy Y60 engine"
-    task :copy_binary, :roles => :app do
-      run "mkdir -p #{y60_install_dir}"
-      top.upload("y60.tar.gz", "#{y60_install_dir}", :via=> :scp)
-      run "tar -C '#{y60_install_dir}' -xzvf '#{y60_install_dir}/y60.tar.gz'"
+    task :copy_package, :roles => :app do
+      run "mkdir -p #{y60_install_dir}/y60"
+      delete_artifact = false
+      version = fetch(:y60_version, "1.0.9")
+      target_platform = fetch(:y60_target_platform, "Linux-x86_64")
+      package = fetch(:y60_package, "Y60-#{version}-#{target_platform}.tar.gz")
+      if not File.file?(package)
+        run_locally "scp artifacts@artifacts:pro60/releases/#{package} #{package}"
+        delete_artifact = true
+      end
+      top.upload(package, "#{y60_install_dir}", :via=> :scp)
+      if delete_artifact
+        run_locally "rm -rf #{package}"
+      end
+      run "tar -C '#{y60_install_dir}/y60' --exclude include --strip-components 1 -xzvf '#{y60_install_dir}/#{package}'"
+      run "rm #{y60_install_dir}/#{package}"
     end
   end
 end

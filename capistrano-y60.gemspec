@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "capistrano-y60"
-  s.version = "0.0.31"
+  s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Gunnar Marten"]
-  s.date = "2014-01-16"
+  s.date = "2014-01-17"
   s.description = "Y60 deployment recipes for Capistrano"
   s.email = "gunnar.marten@artcom.de"
   s.executables = ["update_install_pack_get_y60.sh"]

@@ -130,6 +130,7 @@ configuration.load do
       end
       run "tar -C '#{y60_install_dir}/y60' --exclude include --strip-components 1 -xzvf '#{y60_install_dir}/#{package}'"
       run "rm #{y60_install_dir}/#{package}"
+      sudo "chown -R #{runner}:#{runner} #{deploy_to}"      
     end
   end
 end

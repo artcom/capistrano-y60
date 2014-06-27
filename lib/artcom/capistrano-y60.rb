@@ -24,6 +24,7 @@ configuration.load do
   end
   # Load library
   require 'artcom/app'
+  require 'artcom/common'
   require 'artcom/y60'
   require 'artcom/y60component'
 

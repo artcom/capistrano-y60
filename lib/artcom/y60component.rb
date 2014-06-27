@@ -23,13 +23,13 @@ configuration.load do
     desc "setup directory structure"
     task :setup_directory_structure, :roles => :app do
       y60_components.each {|c|
-        run "mkdir -p #{components_install_dir}/#{c}"
+        run "#{sudo} mkdir -p #{components_install_dir}/#{c}"
       }
     end
     desc "Add component to ldconfig"
     task :update_ldconfig, :roles => :app do
       y60_components.each {|c|
-        run "echo '#{components_install_dir}/#{c}/lib/y60/components' | #{sudo} tee /etc/ld.so.conf.d/#{c}.conf", :pty => true
+        run "#{sudo} echo '#{components_install_dir}/#{c}/lib/y60/components' | #{sudo} tee /etc/ld.so.conf.d/#{c}.conf", :pty => true
         run "#{sudo} /sbin/ldconfig", :pty => true
       }
     end
@@ -37,14 +37,14 @@ configuration.load do
     task :update_environment, :roles => :app do
       next if find_servers_for_task(current_task).empty?
       y60_components.each {|c|
-        run "echo 'export #{c.to_s.upcase.gsub( %r{[\W]+}, '' )}_DIR=#{components_install_dir}/#{c}/' | #{sudo} tee /etc/profile.d/#{c}.sh", :pty => true
+        run "#{sudo} echo 'export #{c.to_s.upcase.gsub( %r{[\W]+}, '' )}_DIR=#{components_install_dir}/#{c}/' | #{sudo} tee /etc/profile.d/#{c}.sh", :pty => true
       }
     end
 
     desc "Copy components"
     task :copy_package, :roles => :app do
       y60_components.each {|c|
-        run "mkdir -p #{components_install_dir}/#{c}"
+        run "#{sudo} mkdir -p #{components_install_dir}/#{c}"
         delete_artifact = false
         version = fetch("_#{c}_version".to_sym, "1.0.9")
         target_platform = fetch("_#{c}_target_platform".to_sym, "Linux-x86_64")
@@ -57,8 +57,8 @@ configuration.load do
         if delete_artifact
           run_locally "rm -rf #{package}"
         end
-        run "tar -C '#{components_install_dir}/#{c}' --exclude include --strip-components 1 -xzvf '#{components_install_dir}/#{package}'"
-        run "rm #{components_install_dir}/#{package}"
+        run "#{sudo} tar -C '#{components_install_dir}/#{c}' --exclude include --strip-components 1 -xzvf '#{components_install_dir}/#{package}'"
+        run "#{sudo} rm #{components_install_dir}/#{package}"
       }
     end
   end

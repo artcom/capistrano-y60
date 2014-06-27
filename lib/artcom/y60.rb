@@ -28,7 +28,7 @@ configuration.load do
 
     desc "setup directory structure"
     task :setup_directory_structure, :roles => :app do
-      run "#{sudo} mkdir -p #{y60_install_dir}/y60"
+      run "mkdir -p #{y60_install_dir}/y60"
     end
 
     desc "Add y60/lib to ldconfig"
@@ -40,7 +40,7 @@ configuration.load do
     desc "Setup environment variable y60 'Y60_DIR'"
     task :update_environment, :roles => :app do
       next if find_servers_for_task(current_task).empty?
-      run "#{sudo} echo 'export Y60_DIR=#{y60_install_dir}/y60/bin' | #{sudo} tee /etc/profile.d/y60.sh", :pty => true
+      run "echo 'export Y60_DIR=#{y60_install_dir}/y60/bin' | #{sudo} tee /etc/profile.d/y60.sh", :pty => true
     end
 
     # --------------------------------------------
@@ -54,10 +54,10 @@ configuration.load do
   $WATCHDOG_DIR/watchdog #{shared_path}/config/watchdog.xml
       SCRIPT
       myLocation = "#{shared_path}/config/#{application}"
-      put_sudo myScript, myLocation
-      run "#{sudo} chmod +x #{shared_path}/config/#{application}"
+      put myScript, myLocation
+      run "chmod +x #{shared_path}/config/#{application}"
       puts "Generated autostart at #{myLocation}."
-      run "#{sudo} ln -sf #{shared_path}/config/#{application} #{deploy_to}/../Autostart/#{application} "
+      run "ln -sf #{shared_path}/config/#{application} #{deploy_to}/../Autostart/#{application} "
       puts "symlinked to #{deploy_to}/../Autostart."
     end
     desc "Add start app desktop link"
@@ -75,8 +75,8 @@ configuration.load do
   Comment=starts #{application}
       SCRIPT
       myLocation = "#{deploy_to}/../Desktop/#{application}.sh.desktop"
-      put_sudo myAutostart, myLocation
-      run "#{sudo} chmod +x #{deploy_to}/../Desktop/#{application}.sh.desktop"
+      put myAutostart, myLocation
+      run "chmod +x #{deploy_to}/../Desktop/#{application}.sh.desktop"
     end
 
     desc "Add kill watchdog and y60 desktop link"
@@ -94,19 +94,19 @@ configuration.load do
   Comment=kills the watchdog & y60
       SCRIPT
       myLocation = "#{deploy_to}/../Desktop/kill_#{application}.sh.desktop"
-      put_sudo myKillWatchdogScript, myLocation
-      run "#{sudo} chmod +x #{deploy_to}/../Desktop/kill_#{application}.sh.desktop"
+      put myKillWatchdogScript, myLocation
+      run "chmod +x #{deploy_to}/../Desktop/kill_#{application}.sh.desktop"
     end
 
     desc "start watchdog & application"
     task :start_app, :roles => :app do
       next if find_servers_for_task(current_task).empty?
-      run "#{sudo} #{shared_path}/config/#{application}"
+      run "#{shared_path}/config/#{application}"
     end
 
     desc "restart the app"
     task :restart_app, :roles => :app do
-      run "#{sudo} killall y60"
+      run "killall y60"
     end
 
     # --------------------------------------------
@@ -115,7 +115,7 @@ configuration.load do
 
     desc "Copy Y60 engine"
     task :copy_package, :roles => :app do
-      run "#{sudo} mkdir -p #{y60_install_dir}/y60"
+      run "mkdir -p #{y60_install_dir}/y60"
       delete_artifact = false
       version = fetch(:y60_version, "1.0.9")
       target_platform = fetch(:y60_target_platform, "Linux-x86_64")
@@ -128,8 +128,8 @@ configuration.load do
       if delete_artifact
         run_locally "rm -rf #{package}"
       end
-      run "#{sudo} tar -C '#{y60_install_dir}/y60' --exclude include --strip-components 1 -xzvf '#{y60_install_dir}/#{package}'"
-      run "#{sudo} rm #{y60_install_dir}/#{package}"
+      run "tar -C '#{y60_install_dir}/y60' --exclude include --strip-components 1 -xzvf '#{y60_install_dir}/#{package}'"
+      run "rm #{y60_install_dir}/#{package}"
     end
   end
 end

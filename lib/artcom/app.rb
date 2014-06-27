@@ -25,8 +25,8 @@ configuration.load do
 
       desc "setup directory structure"
       task :setup_directory_structure, :roles => :app do
-        run "#{sudo} mkdir -p #{shared_path}/config"
-        run "#{sudo} mkdir -p #{shared_path}/content"
+        run "mkdir -p #{shared_path}/config"
+        run "mkdir -p #{shared_path}/content"
       end
 
       desc "Set environment variable application content dir"
@@ -43,7 +43,7 @@ configuration.load do
         if template
           config = ERB.new(template)
           myLocation = "#{shared_path}/config/watchdog.xml"
-          sudo_put config.result(binding), myLocation
+          put config.result(binding), myLocation
           puts "Generated watchdog.xml at #{myLocation}."
         end
       end
@@ -56,7 +56,7 @@ configuration.load do
         if template
           config = ERB.new(template)
           myLocation = "#{shared_path}/config/app_settings.js"
-          sudo_put config.result(binding), myLocation
+          put config.result(binding), myLocation
           puts "Generated app_settings.js at #{myLocation}."
         end
       end
@@ -65,7 +65,7 @@ configuration.load do
         servers = find_servers_for_task(current_task)
         servers.each do |server|
           content_dirs.each do |dir|
-            system("#{sudo} rsync -uva --delete --exclude '.*' '#{dir}' '#{user}@#{server}:#{shared_path}/content/'")
+            system("rsync -uva --delete --exclude '.*' '#{dir}' '#{user}@#{server}:#{shared_path}/content/'")
           end
         end
       end

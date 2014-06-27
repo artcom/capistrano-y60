@@ -68,6 +68,7 @@ configuration.load do
             system("rsync -uva --delete --exclude '.*' '#{dir}' '#{user}@#{server}:#{shared_path}/content/'")
           end
         end
+        sudo "chown -R #{runner}:#{runner} #{deploy_to}"
       end
     end
   end

@@ -55,11 +55,12 @@ configuration.load do
       SCRIPT
       myLocation = "#{shared_path}/config/#{application}"
       put myScript, myLocation
-      run "chmod +x #{shared_path}/config/#{application}"
+      run "sudo chmod +x #{shared_path}/config/#{application}"
       puts "Generated autostart at #{myLocation}."
       run "ln -sf #{shared_path}/config/#{application} #{deploy_to}/../Autostart/#{application} "
       puts "symlinked to #{deploy_to}/../Autostart."
     end
+
     desc "Add start app desktop link"
     task :add_startapp_desktop_link, :roles => :app do
       myAutostart = <<-SCRIPT

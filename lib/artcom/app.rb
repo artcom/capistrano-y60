@@ -52,7 +52,6 @@ configuration.load do
 }
           CONFIG
           put_sudo(config_file, "/etc/logrotate.d/#{application}.conf")
-        end
       end
 
       desc "generate watchdog.xml"

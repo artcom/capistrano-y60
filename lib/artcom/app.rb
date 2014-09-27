@@ -40,7 +40,8 @@ configuration.load do
       desc "Setup logrotate"
       task :setup_logrotate, :roles => :app do
           config_file = <<-CONFIG
-#{shared_path}/log/*.log {
+#{shared_path}/log/y60.log {
+        su microzoo microzoo
         size 1G
         minsize 1k
         copytruncate
@@ -52,6 +53,13 @@ configuration.load do
 }
         CONFIG
         put_sudo(config_file, "/etc/logrotate.d/#{application}.conf")
+        run "sudo chown root:root /etc/logrotate.d/#{application}.conf"
+        run "sudo chmod 644 /etc/logrotate.d/#{application}.conf"
+      end
+
+      desc "remove old logfiles"
+      task :remove_old_logfiles, :roles => :app do
+        run "find #{shared_path}/log/ -mtime +3 -delete"
       end
 
       desc "generate watchdog.xml"

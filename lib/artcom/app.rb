@@ -57,7 +57,7 @@ configuration.load do
         run "sudo chmod 644 /etc/logrotate.d/#{application}.conf"
       end
 
-      desc "remove old logfiles"
+      desc "remove up to 3 days old logfiles"
       task :remove_old_logfiles, :roles => :app do
         run "find #{shared_path}/log/ -mtime +3 -delete"
       end

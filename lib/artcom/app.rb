@@ -35,6 +35,26 @@ configuration.load do
         run "echo 'export #{application.to_s.upcase.gsub( %r{[\W]+}, '' )}_CONTENT_DIR=#{shared_path}/content' | #{sudo} tee /etc/profile.d/#{application}.sh", :pty => true
       end
 
+      # use as:
+      # after 'deploy:setup', 'shared_folder:setup_logrotate'
+      desc "Setup logrotate"
+      task :setup_logrotate, :roles => :app do
+          config_file = <<-CONFIG
+#{shared_path}/log/*.log {
+        size 1G
+        minsize 1k
+        copytruncate
+        daily
+        rotate 14
+        compress
+        missingok
+        notifempty
+}
+          CONFIG
+          put_sudo(config_file, "/etc/logrotate.d/#{application}.conf")
+        end
+      end
+
       desc "generate watchdog.xml"
       task :generate_watchdog_xml, :roles => :app do
         require 'erb'

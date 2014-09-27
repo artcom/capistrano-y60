@@ -50,8 +50,8 @@ configuration.load do
         missingok
         notifempty
 }
-          CONFIG
-          put_sudo(config_file, "/etc/logrotate.d/#{application}.conf")
+        CONFIG
+        put_sudo(config_file, "/etc/logrotate.d/#{application}.conf")
       end
 
       desc "generate watchdog.xml"

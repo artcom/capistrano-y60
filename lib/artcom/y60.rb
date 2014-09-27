@@ -107,7 +107,7 @@ configuration.load do
 
     desc "restart the app"
     task :restart_app, :roles => :app do
-      run "killall y60"
+      run "sudo killall y60"
     end
 
     # --------------------------------------------

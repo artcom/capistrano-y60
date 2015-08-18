@@ -54,7 +54,7 @@ configuration.load do
   $WATCHDOG_DIR/watchdog #{shared_path}/config/watchdog.xml
       SCRIPT
       myLocation = "#{shared_path}/config/#{application}"
-      put myScript, myLocation
+      put_sudo myScript, myLocation
       run "sudo chmod +x #{shared_path}/config/#{application}"
       puts "Generated autostart at #{myLocation}."
       run "ln -sf #{shared_path}/config/#{application} #{deploy_to}/../Autostart/#{application} "
@@ -76,7 +76,7 @@ configuration.load do
   Comment=starts #{application}
       SCRIPT
       myLocation = "#{deploy_to}/../Desktop/#{application}.sh.desktop"
-      put myAutostart, myLocation
+      put_sudo myAutostart, myLocation
       run "chmod +x #{deploy_to}/../Desktop/#{application}.sh.desktop"
     end
 
@@ -95,7 +95,7 @@ configuration.load do
   Comment=kills the watchdog & y60
       SCRIPT
       myLocation = "#{deploy_to}/../Desktop/kill_#{application}.sh.desktop"
-      put myKillWatchdogScript, myLocation
+      put_sudo myKillWatchdogScript, myLocation
       run "chmod +x #{deploy_to}/../Desktop/kill_#{application}.sh.desktop"
     end
 
